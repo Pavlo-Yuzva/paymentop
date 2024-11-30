@@ -1,0 +1,22 @@
+{
+  "name": "paymentop-test-task",
+  "version": "1.0.0",
+  "description": "automation test task",
+  "main": "index.js",
+  "scripts": {
+    "test:all": "npx playwright test",
+    "test:api": "npx playwright test --project=api",
+    "test:web-client": "npx playwright test --project=web-client"
+  },
+  "keywords": [],
+  "author": "Pavlo Yuzva",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^22.10.1"
+  }
+}
