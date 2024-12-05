@@ -1,31 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { ApiManager } from '@src/api/api-manager/api-manager';
+import { expect } from '@playwright/test';
+import { test } from '@src/fixtures/test-fixtures';
 import { generateName, generateNumber } from '@src/utils/utils';
 import { isValidAge, isString } from '@src/utils/validators';
-
-let am: ApiManager;
-
-/**
- * Initializing of context gives more control than built-in contexts inside the PW fixtures.
- * I chose here beforeAll (not Each) because HTTP requests are independent of each other.
- * It will save resources on execution.
- */
-
-test.beforeAll(async ({ browser }) => {
-  const context = await browser.newContext();
-  am = new ApiManager(context.request, '/v1');
-});
-
-test.afterAll(async ({ browser }) => {
-  /**
-   * It is preffered using here "for" cycle rather than await Promise.all() to ensure all contexts are closed in a queue.
-   * In my previous experience I faced an issue when the context from next .spec file started before context in previous file had not been closed yet.
-   */
-
-  for (const context of browser.contexts()) {
-    await context.close();
-  }
-});
 
 /**
  * All tests here are executed after setup file.
@@ -37,8 +13,8 @@ test.afterAll(async ({ browser }) => {
  */
 
 test.describe('/v1/users tests', () => {
-  test('Should get user info', async () => {
-    const response = await am.users.getUser(generateNumber());
+  test('Should get user info', async ({ amv1 }) => {
+    const response = await amv1.users.getUser(generateNumber());
 
     /** I wrote this expect in accordance with a test task.
      * But I do not recommend create expects such like this.
@@ -55,10 +31,10 @@ test.describe('/v1/users tests', () => {
     expect(response.json.user_id).toBeDefined();
   });
 
-  test('Should create a user', async () => {
+  test('Should create a user', async ({ amv1 }) => {
     const username = generateName();
 
-    const response = await am.users.postUser({
+    const response = await amv1.users.postUser({
       username: username,
       age: generateNumber(2),
       userType: true,

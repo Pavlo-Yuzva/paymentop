@@ -1,21 +1,15 @@
-import { test, expect } from '@playwright/test';
-import {
-  ApiManager,
-  HandleResponseResult,
-} from '@src/api/api-manager/api-manager';
+import { expect } from '@playwright/test';
+import { test } from '@src/fixtures/test-fixtures';
+import { HandleResponseResult } from '@src/api/api-manager/api-manager';
 import { testsConfig } from '@src/environment';
-
-let am: ApiManager;
 
 /**
  * This is a setup file. Test here is based on a real API I found during testing paydo.com
  * This file is executed before all tests determined in api project (look on playwright.config.ts file)
  */
 
-test('Login', async ({ request }) => {
-  am = new ApiManager(request, '/v1');
-
-  const firewallToken = await am.users.generateFirewallToken();
+test('Login', async ({ amv1 }) => {
+  const firewallToken = await amv1.users.generateFirewallToken();
 
   /** The reason of adding "while" cycle here is that test works much faster than server processes the firewallToken.
    * I faced an issue that I received this token but was not able to use it immediately because server was still processing it.
@@ -26,7 +20,7 @@ test('Login', async ({ request }) => {
   let responseLogin = {} as HandleResponseResult;
 
   while (!success) {
-    responseLogin = await am.users.login({
+    responseLogin = await amv1.users.login({
       email: testsConfig.testUser.email,
       password: testsConfig.testUser.password,
       firewallToken: firewallToken.json.data.firewallToken,

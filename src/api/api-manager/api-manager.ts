@@ -1,4 +1,4 @@
-import { APIRequestContext, APIResponse } from '@playwright/test';
+import { APIRequestContext, APIResponse, Page } from '@playwright/test';
 import { Users } from '@src/api/resources/users';
 
 /**
@@ -75,11 +75,13 @@ export async function handleResponse(
  */
 
 export class ApiManager {
+  readonly page: Page;
   readonly request: APIRequestContext;
   readonly users: Users;
 
-  constructor(request: APIRequestContext, version: ApiVersion) {
-    this.request = request;
-    this.users = new Users(request, version);
+  constructor(page: Page, version: ApiVersion) {
+    this.page = page;
+    this.request = this.page.request;
+    this.users = new Users(this.request, version);
   }
 }

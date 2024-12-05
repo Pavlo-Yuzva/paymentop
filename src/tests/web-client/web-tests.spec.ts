@@ -1,34 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { PageManager } from '@src/pages/page-manager/page-manager';
+import { expect } from '@playwright/test';
+import { test } from '@src/fixtures/test-fixtures';
 import { generateName } from '@src/utils/utils';
 
-let pm: PageManager;
-
-/**
- * Initializing of context gives more control than built-in contexts inside the PW fixtures.
- * I chose here beforeEach (not All) because it is a good practice to use "clear" state for every UI test.
- * It may be a bit more expensive from resources side (especially if tests are run in parallel).
- * But tests are much more stable and independent.
- */
-
-test.beforeEach(async ({ browser }) => {
-  const context = await browser.newContext();
-  pm = new PageManager(await context.newPage());
-});
-
-test.afterEach(async ({ browser }) => {
-  /**
-   * It is preffered using here "for" cycle rather than await Promise.all[] to ensure all contexts are closed in a queue.
-   * In my previous experience I faced an issue when the context from next .spec file started before context in previous file had not been closed yet.
-   */
-
-  for (const context of browser.contexts()) {
-    await context.close();
-  }
-});
-
 test.describe('Web-client', () => {
-  test(`TEST TASK 1: Should ensure all elements are visible on registration page`, async () => {
+  test(`TEST TASK 1: Should ensure all elements are visible on registration page`, async ({
+    pm,
+  }) => {
     /** I do not use test.step() on a regular basis. Here it used only to reflect the steps of the test task.
      *  Test.step() creates nested functions and makes code reading harder.
      *  Locators or specific functions called in test should have accurate names.
@@ -56,7 +33,9 @@ test.describe('Web-client', () => {
     });
   });
 
-  test('TEST TASK 2: Should ensure error message is appeared when user types incorrect credentials', async () => {
+  test('TEST TASK 2: Should ensure error message is appeared when user types incorrect credentials', async ({
+    pm,
+  }) => {
     await pm.loginPage.goto();
 
     await pm.loginPage.locators.email().fill(`${generateName()}@gmail.com`);
@@ -74,7 +53,7 @@ test.describe('Web-client', () => {
     /** Test time on my machine 5.9 sec */
   });
 
-  test('TEST TASK 2: MOCKED EXAMPLE', async () => {
+  test('TEST TASK 2: MOCKED EXAMPLE', async ({ pm }) => {
     pm.page.route(/\/login/, async (route) => {
       const responseData = {
         message: '["The email address or password you entered is incorrect"]',
