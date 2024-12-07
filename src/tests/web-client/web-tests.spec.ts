@@ -1,15 +1,16 @@
 import { expect } from '@playwright/test';
 import { test } from '@src/fixtures/test-fixtures';
-import { generateName } from '@src/utils/utils';
+import { generateString } from '@src/utils/utils';
 
 test.describe('Web-client', () => {
   test(`TEST TASK 1: Should ensure all elements are visible on registration page`, async ({
     pm,
   }) => {
-    /** I do not use test.step() on a regular basis. Here it used only to reflect the steps of the test task.
+    /** (!!!) I do not use test.step() on a regular basis. Here it used only to reflect the steps of the test task.
      *  Test.step() creates nested functions and makes code reading harder.
      *  Locators or specific functions called in test should have accurate names.
-     *  Accurate names help in undestanding what is going on in test-scenario without test.step() */
+     *  Accurate names help in undestanding what is going on in test-scenario without test.step()
+     *  For example I didn't use steps it in TEST TASK 2 but it is very easy to understand actions (!!!)*/
 
     await test.step('Відкрити цю сторінку https://paydo.com/', async () => {
       await pm.homePage.goto();
@@ -38,8 +39,8 @@ test.describe('Web-client', () => {
   }) => {
     await pm.loginPage.goto();
 
-    await pm.loginPage.locators.email().fill(`${generateName()}@gmail.com`);
-    await pm.loginPage.locators.password().fill(generateName());
+    await pm.loginPage.locators.email().fill(`${generateString()}@gmail.com`);
+    await pm.loginPage.locators.password().fill(generateString());
 
     await pm.loginPage.locators.logIn().click();
 
@@ -70,8 +71,8 @@ test.describe('Web-client', () => {
     });
 
     await pm.loginPage.goto();
-    await pm.loginPage.locators.email().fill(`${generateName()}@gmail.com`);
-    await pm.loginPage.locators.password().fill(generateName());
+    await pm.loginPage.locators.email().fill(`${generateString()}@gmail.com`);
+    await pm.loginPage.locators.password().fill(generateString());
 
     await pm.loginPage.locators.logIn().click();
 

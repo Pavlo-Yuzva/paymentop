@@ -1,10 +1,7 @@
-import { APIRequestContext } from "@playwright/test";
-import { testsConfig } from "@src/environment";
-import {
-  ApiVersion,
-  BodyInRequest,
-  handleResponse,
-} from "@api/api-manager/api-manager";
+import { APIRequestContext } from '@playwright/test';
+import { testsConfig } from '@src/environment';
+import { ApiVersion, BodyInRequest } from '@api/types/types';
+import { handleResponse } from '@api/utils/utils';
 
 /**
  * Class describes methods for /users resource.

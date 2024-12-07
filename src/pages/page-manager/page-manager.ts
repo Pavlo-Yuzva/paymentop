@@ -9,10 +9,10 @@ import { LoginPage } from '@pages/login';
  */
 
 export class PageManager {
-  page: Page;
-  homePage: HomePage;
-  signUpPage: SignUpPage;
-  loginPage: LoginPage;
+  readonly page: Page;
+  readonly homePage: HomePage;
+  readonly signUpPage: SignUpPage;
+  readonly loginPage: LoginPage;
 
   constructor(page: Page) {
     this.page = page;

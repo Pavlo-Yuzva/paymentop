@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '@src/fixtures/test-fixtures';
-import { generateName, generateNumber } from '@src/utils/utils';
+import { generateString, generateNumber } from '@src/utils/utils';
 import { isValidAge, isString } from '@src/utils/validators';
 
 /**
@@ -9,7 +9,8 @@ import { isValidAge, isString } from '@src/utils/validators';
  * If no need in this header there are a couple of diffeent ways:
  * 1. Create another one project in playwright.config.ts
  * 2. Create test configuration with using extraHTTPHeaders: token: ''
- * 3. Determine headers { token: '' } for a specific test (for example for unauthorized tests).
+ * 3. Determine headers { token: '' } for a specific test (for example for unauthorized tests).\
+ * 4. Use new context.
  */
 
 test.describe('/v1/users tests', () => {
@@ -32,7 +33,7 @@ test.describe('/v1/users tests', () => {
   });
 
   test('Should create a user', async ({ amv1 }) => {
-    const username = generateName();
+    const username = generateString();
 
     const response = await amv1.users.postUser({
       username: username,
@@ -40,6 +41,9 @@ test.describe('/v1/users tests', () => {
       userType: true,
     });
 
+    /**
+     * Approach I recommended above for assertions using a specific value.
+     */
     expect(response.json.username).toBe(username);
 
     expect(response.json.user_id).toBeDefined();

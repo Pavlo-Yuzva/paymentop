@@ -1,4 +1,4 @@
-export function generateName() {
+export function generateString() {
   return Math.floor(Math.random() * Date.now()).toString(36);
 }
 

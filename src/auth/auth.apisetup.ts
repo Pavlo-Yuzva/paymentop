@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '@src/fixtures/test-fixtures';
-import { HandleResponseResult } from '@src/api/api-manager/api-manager';
+import { HandleResponseResult } from '@src/api/types/types';
 import { testsConfig } from '@src/environment';
 
 /**
